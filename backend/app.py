@@ -16,17 +16,13 @@ CORS(app)
 token_counter = TokenCounter()
 
 # Initialize default FAISS vector store on startup (project-agnostic)
-print("[STARTUP] 🚀 AI Test Case Generator - AI-ONLY Mode")
+print("🚀 AI Test Case Generator - Starting...")
 try:
     from vector_store import initialize_vector_store
     vector_store_initialized = initialize_vector_store(project_name=None)
-    if vector_store_initialized:
-        print("[STARTUP] ✅ FAISS vector store ready")
-    else:
-        print("[STARTUP] ❌ FAISS vector store failed")
+    print("✅ Vector store ready" if vector_store_initialized else "⚠️ Vector store failed")
 except Exception as e:
-    print(f"[STARTUP] ❌ Vector store error: {str(e)}")
-    print("[STARTUP] 🔄 System will use intelligent fallback when needed")
+    print(f"⚠️ Vector store error: {str(e)}")
 token_counter = TokenCounter()
 
 @app.route('/health', methods=['GET'])
@@ -325,7 +321,6 @@ def generate_test_cases():
             if result.get('success'):
                 test_cases = result['test_cases']
                 generation_metadata = result['metadata']
-                print(f"[SYSTEM] ✅ Generated using {generation_metadata.get('model_used', 'AI')} in {generator.ai_mode.upper()} mode")
             else:
                 raise Exception(f"Enhanced generation failed: {result.get('error', 'Unknown error')}")
         else:
@@ -352,8 +347,7 @@ def generate_test_cases():
             f.write(processed_test_cases)
 
         ai_mode = getattr(generator, 'ai_mode', 'unknown')
-        print(f"[SYSTEM] ✅ Test cases generated using {ai_mode.upper()} mode")
-        print(f"[SYSTEM] 📁 Output saved to: {output_path}")
+        print(f"✅ {project_name} | {ai_mode} | {generation_metadata.get('model_used', 'AI')}")
 
         # Log usage
         token_counter.log_request(
@@ -386,8 +380,7 @@ def generate_test_cases():
         })
 
     except ImportError as e:
-        print(f"❌ Could not import Enhanced TestCaseGenerator: {str(e)}")
-        print("🔄 This indicates a critical system configuration issue")
+        print(f"❌ Import Error: {str(e)}")
         return jsonify({
             "success": False,
             "error": "Enhanced test case generator not available",
@@ -395,8 +388,7 @@ def generate_test_cases():
             "suggestion": "Please ensure all dependencies are installed and project structure is correct",
         }), 500
     except Exception as e:
-        print(f"❌ Error generating test cases: {str(e)}")
-        print(f"📋 Exception details: {traceback.format_exc()}")
+        print(f"❌ Generation Error: {str(e)}")
         if "ollama" in str(e).lower() or "faiss" in str(e).lower():
             return jsonify({
                 "success": False,
