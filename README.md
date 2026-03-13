@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # AI Test Case Generator
 
 An intelligent test case generation system powered by open-source LLM models (Ollama) and FAISS vector database for semantic search and context-aware test case creation.
@@ -244,3 +245,7 @@ For support and questions:
 ---
 
 **Built with ❤️ using Ollama, FAISS, and Flask**
+=======
+# AI-TestCase-Generator
+>>>>>>> 887e0b33fe711e075358e9702fe428e77c31f8ee
+
