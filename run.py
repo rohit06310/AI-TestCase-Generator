@@ -123,7 +123,7 @@ def start_api_server(port, debug, env):
             use_knowledge = data.get('use_knowledge', True)
             
             # Generate test cases
-            generator = TestCaseGenerator(model_name=model_name, knowledge_base=knowledge_base)
+            generator = TestCaseGenerator(model_name=model_name)
             test_cases = generator.generate_test_cases(
                 description, 
                 acceptance_criteria,
@@ -188,7 +188,7 @@ def run_cli_tool(user_story, acceptance_criteria, output_file):
     knowledge_base = KnowledgeBase()
     
     # Generate test cases
-    generator = TestCaseGenerator(knowledge_base=knowledge_base)
+    generator = TestCaseGenerator()
     test_cases = generator.generate_test_cases(user_story, acceptance_criteria)
     
     # Save output

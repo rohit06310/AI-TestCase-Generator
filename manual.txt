@@ -1,0 +1,128 @@
+=========================================================
+      AI Test Case Generator - User Manual
+=========================================================
+
+1. OVERVIEW
+---------------------------------------------------------
+The AI Test Case Generator is an intelligent tool designed 
+to automatically create software test cases based on your 
+application's requirements. It uses open-source Large 
+Language Models (Ollama) and a vector database (FAISS) to 
+understand your specific project and generate contextually 
+relevant, high-quality test cases.
+
+2. HOW IT WORKS
+---------------------------------------------------------
+1. Knowledge Ingestion: The system reads text documents 
+   describing your application (specifications, coding 
+   standards, and past test examples) and stores this 
+   knowledge in a searchable FAISS Vector Database.
+2. User Request: You send a request to the system 
+   describing the feature you want to test (e.g., "User 
+   Login").
+3. Context Retrieval: The system searches its knowledge base 
+   for information relevant to "User Login".
+4. AI Generation: The retrieved context and your request are 
+   passed to an AI model (like Llama2 or Mistral) running 
+   locally via Ollama.
+5. Output: The AI generates detailed, step-by-step test 
+   cases formatted specifically for your project and returns 
+   them to you.
+
+3. KNOWLEDGE BASE INPUTS (Project Context)
+---------------------------------------------------------
+Before generating tests, you should provide the system with 
+context about your application. Place plain text documents 
+in the following directories within the 'backend' folder:
+
+A. backend/knowledge_base/overall_functionality.txt
+   Put your main product specifications here.
+   Example: "The e-commerce cart allows adding a maximum 
+   of 50 items. Users must be logged in to checkout..."
+
+B. backend/knowledge_base/test_case_examples/
+   Put existing, well-written test cases here so the AI 
+   learns your preferred format.
+   Example: Files containing standard Gherkin syntax 
+   (Given... When... Then...) or step-by-step tables.
+
+C. backend/knowledge_base/best_practices/
+   Put your team's testing conventions here.
+   Example: "All API test cases must include a step to 
+   verify the HTTP 200 OK status code."
+
+* Important: After updating these files, run the vector 
+  store initialization command to update the AI's memory.
+
+4. USER REQUEST INPUTS (Generating Tests)
+---------------------------------------------------------
+To generate test cases for a specific feature, you will 
+send an API request to the backend server (typically running 
+on http://localhost:5002/generate-test-cases) with the 
+following inputs in JSON format:
+
+* "description": The specific feature or user story you 
+  want to test (e.g., "User login functionality").
+* "acceptance_criteria": Rules that the feature must pass 
+  (e.g., "Email must have @ symbol, password > 8 chars").
+* "project_name": (Required) The name of your project namespace 
+  for vector searching.
+* "use_knowledge": (Optional) true/false to use Vector DB.
+
+Example JSON Input for a specific feature:
+{
+  "description": "User login functionality with email validation",
+  "acceptance_criteria": "System must reject invalid emails and short passwords.",
+  "project_name": "my_ecommerce_app",
+  "use_knowledge": true
+}
+
+*** HOW TO GENERATE RANDOM / EXPLORATORY TEST CASES ***
+If you want the system to generate "random" test cases, 
+edge cases, or exploratory testing scenarios rather than 
+testing a specific feature, you can structure your request 
+like this:
+
+Example JSON Input for Random Test Cases:
+{
+  "description": "Exploratory testing and random edge cases for the entire application.",
+  "acceptance_criteria": "Generate creative, unstructured, boundary, and negative test cases that users might accidentally trigger. Do not focus on standard happy paths.",
+  "project_name": "my_ecommerce_app",
+  "use_knowledge": true
+}
+By providing broad instructions in the "description" and 
+"acceptance_criteria", the AI will use your Knowledge Base 
+to randomly target different parts of your system and 
+suggest edge cases.
+
+5. SYSTEM OUTPUT FOR THE USER
+---------------------------------------------------------
+The system will process your request and return a structured 
+JSON response containing the generated test cases.
+
+The output will typically include:
+- A list of test cases, each with:
+  * Test Case ID / Title
+  * Description / Objective
+  * Pre-conditions (what needs to be set up before testing)
+  * Test Steps (step-by-step instructions to execute)
+  * Expected Results (what the system should do if it works)
+  * Post-conditions (state of the system after the test)
+
+Example Output format (Text representation):
+
+Test Case: Verify successful login with correct credentials
+Objective: Ensure users can access their dashboard by logging in.
+Pre-conditions: 
+  1. User has a registered account.
+  2. User is on the login page.
+Steps:
+  1. Enter a valid registered email in the "Email" field.
+  2. Enter the corresponding valid password.
+  3. Click the "Login" button.
+Expected Results:
+  The system authenticates the user, generates a session token, 
+  and redirects the user to the "Dashboard" page.
+
+---
+End of Manual

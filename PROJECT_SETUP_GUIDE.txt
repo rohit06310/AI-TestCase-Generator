@@ -1,0 +1,67 @@
+====================================================
+AI TEST CASE GENERATOR - PROJECT SETUP & GUIDE
+====================================================
+
+1. IMPORTANT SETUP NOTES & PREREQUISITES
+----------------------------------------------------
+Before running the project, note the following requirements:
+- Python Version: Python 3.10, 3.11, or 3.12 (as required by the backend).
+- Node.js Version: Node.js 20 or higher is strictly required if you plan to deploy the frontend (Atlassian Forge CLI).
+- Ollama: Must be installed and running locally (`ollama serve`).
+- Models: The default LLM model required is Mistral. You must download it by running `ollama pull mistral`.
+- Dependencies: Python packages are listed in `requirements.txt`. Key backend libraries include `flask`, `langchain`, `sentence-transformers`, `faiss-cpu`, and `langchain-ollama`.
+
+2. HOW TO START THE PROJECT
+----------------------------------------------------
+Step A: Initialize Environment
+1. Open a terminal in the project root directory.
+2. Activate the Python virtual environment: 
+   $ source venv/bin/activate
+
+Step B: Start the API Server
+1. You can start the server via the provided bash script:
+   $ bash start_server.sh
+   (OR manually: $ python run.py api --port 5002)
+
+Step C: Use the Command Line Interface (CLI) Tester
+1. You can generate test cases directly from the terminal without the API:
+   $ python run.py cli --user-story "As a user, I want to log in..." --acceptance-criteria "1. Must log in with email and password"
+
+3. DEMO IP AND EXPECTED OUTPUT
+----------------------------------------------------
+Demo IP / URL:
+- When the API server is started, it binds to localhost. 
+- The Demo IP/URL is: http://localhost:5002
+- You can check the health status of the API at: http://localhost:5002/health
+
+Expected Output:
+- The system generates structured Functional Test Cases based on your User Stories.
+- Outputs are categorized into "Positive Test Cases" and "Negative Test Cases".
+- Each test case contains the exact fields: Acceptance Criteria, Test case Title, Steps, and Expected Result.
+- For the API, the output is returned as formatted Markdown text encapsulated in a JSON response. 
+- For the CLI, the output is printed directly formatted as Markdown in the terminal.
+
+4. HOW TO ANALYZE THE CI/CD PIPELINES
+----------------------------------------------------
+The CI/CD pipeline is powered by GitHub Actions and is located in: `.github/workflows/ci.yml`.
+
+How it Works:
+- The pipeline triggers automatically whenever code is pushed to the `main` or `master` branches, or when a Pull Request is opened.
+- It spins up isolated Ubuntu Linux servers to run automated tests.
+
+What it Checks:
+1. Backend Checks (`backend-checks` job): 
+   - Installs all Python dependencies.
+   - Runs `flake8` (a Python linter) across 3 different Python versions (3.10, 3.11, 3.12).
+   - Analysis: If the Python code has syntax errors, undefined variables, or major formatting violations, the pipeline will fail and block the code from being merged.
+   
+2. Frontend Checks (`frontend-checks` job):
+   - Sets up Node.js v20.
+   - Installs the Jira plugin dependencies.
+   - Runs `forge lint`.
+   - Analysis: Validates the React code and Atlassian manifest files to ensure the Jira plugin is structured correctly before deployment.
+
+How to Analyze Output:
+- When using GitHub, navigate to the "Actions" tab of your repository. 
+- You will see a list of pipeline runs with a Green Checkmark (✅) for Pass or a Red Cross (❌) for Fail. 
+- You can click into any failed run to view the exact terminal log (e.g., "SyntaxError on line 45") and fix it.

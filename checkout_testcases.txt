@@ -1,0 +1,60 @@
+## Positive Test Cases
+Acceptance Criteria: User can add items
+Test case Title: Verify successful item addition
+Steps:
+  1. Navigate to the product page.
+  2. Click on the "Add to Cart" button.
+Expected Result: The item is added to the cart.
+
+Acceptance Criteria: Cart updates total price
+Test case Title: Verify multiple item addition
+Steps:
+  1. Add multiple items to the cart.
+Expected Result: All items are successfully added to the cart.
+
+Acceptance Criteria: Checkout requires shipping address
+Test case Title: Verify updated cart total after adding an item
+Steps:
+  1. Add an item to the cart.
+  2. Check the cart total.
+Expected Result: The cart total is updated with the correct price of the added item.
+
+Acceptance Criteria: 
+Test case Title: Verify updated cart total after removing an item
+Steps:
+  1. Add an item to the cart.
+  2. Remove the item from the cart.
+  3. Check the cart total.
+Expected Result: The cart total is updated with the correct price after removing the item.
+
+Acceptance Criteria: 
+Test case Title: Verify checkout failure without a shipping address
+Steps:
+  1. Navigate to the checkout page.
+  2. Attempt to proceed without entering a shipping address.
+Expected Result: The checkout process is blocked, and an error message is displayed indicating that a shipping address is required.
+
+Acceptance Criteria: 
+Test case Title: Verify successful checkout with a valid shipping address
+Steps:
+  1. Navigate to the checkout page.
+  2. Enter a valid shipping address.
+  3. Proceed with checkout.
+Expected Result: The order is successfully placed, and the user is redirected to the confirmation page.
+
+## Negative Test Cases
+Test case Title: Validate scenario behaves as expected
+Steps:
+  1. Navigate to the checkout page with an empty cart.
+Expected Result: The checkout process is blocked, and an error message is displayed indicating that the cart is empty.
+
+Test case Title: Validate scenario behaves as expected
+Steps:
+  1. Navigate to the checkout page.
+  2. Enter an invalid shipping address format (e.g., incorrect postal code or missing city).
+Expected Result: The checkout process is blocked, and an error message is displayed indicating that the entered shipping address is invalid.
+
+Test case Title: Validate missing shipping address field checkout failure
+Steps:
+  1. Navigate to the checkout page with a valid cart but without entering any shipping address information.
+Expected Result: The checkout process is blocked, and an error message is displayed indicating that a shipping address is required.

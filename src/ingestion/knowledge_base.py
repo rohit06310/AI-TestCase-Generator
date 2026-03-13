@@ -13,7 +13,7 @@ from datetime import datetime
 import numpy as np
 from langchain_openai import OpenAIEmbeddings
 from langchain_community.vectorstores import FAISS
-from langchain.schema import Document
+from langchain_core.documents import Document
 
 # Configure logging
 logger = logging.getLogger('ai-test-generator')

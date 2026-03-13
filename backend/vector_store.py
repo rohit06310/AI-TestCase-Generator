@@ -9,8 +9,8 @@ from typing import List, Dict, Any, Optional
 import faiss
 import numpy as np
 from sentence_transformers import SentenceTransformer
-from langchain.text_splitter import RecursiveCharacterTextSplitter
-from langchain.docstore.document import Document
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_core.documents import Document
 from langchain_community.vectorstores import FAISS
 from langchain.embeddings.base import Embeddings
 
@@ -358,7 +358,6 @@ def get_vector_store(project_name: Optional[str] = None) -> TestCaseVectorStore:
     Returns:
         TestCaseVectorStore instance for that project.
     """
-    global _vector_store_instances
     if project_name not in _vector_store_instances:
         paths = _paths_for_project(project_name)
         _vector_store_instances[project_name] = TestCaseVectorStore(

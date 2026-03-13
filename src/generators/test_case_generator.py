@@ -101,9 +101,9 @@ class TestCaseGenerator:
                         # Fallback for older API format
                         available_models = [model.get('name', model.get('model', '')) for model in models_response.get('models', [])]
                     
-                    if not any('llama2' in model for model in available_models):
-                        raise RuntimeError("llama2 model not found. Please run: ollama pull llama2")
-                    self.llm = OllamaLLM(model="llama2", base_url="http://localhost:11434", temperature=0.1)
+                    if not any('mistral' in model for model in available_models):
+                        raise RuntimeError("mistral model not found. Please run: ollama pull mistral")
+                    self.llm = OllamaLLM(model="mistral", base_url="http://localhost:11434", temperature=0.1)
                     
                     # Test LLM with a simple query
                     test_response = self.llm.invoke("Hello")
@@ -639,7 +639,7 @@ Do not include any other fields. Keep wording grounded in the given acceptance c
                 "metadata": {
                     "generated_at": start_time.isoformat(),
                     "generation_time_seconds": (datetime.now() - start_time).total_seconds(),
-                    "model_used": "llama2",
+                    "model_used": "mistral",
                     "ai_mode": self.ai_mode,
                     "ai_only": self.ai_only,
                     "embeddings_type": "HuggingFace",
@@ -708,7 +708,7 @@ Do not include any other fields. Keep wording grounded in the given acceptance c
             dict: Dictionary with system statistics
         """
         stats = {
-            "llm_model": "llama2" if self.llm else "not_initialized",
+            "llm_model": "mistral" if self.llm else "not_initialized",
             "ai_mode": self.ai_mode,
             "ai_only": self.ai_only,
             "embeddings_type": "HuggingFace",

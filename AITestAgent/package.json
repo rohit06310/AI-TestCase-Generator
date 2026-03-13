@@ -9,9 +9,10 @@
     "eslint-plugin-react-hooks": "^4.6.0"
   },
   "dependencies": {
-    "@forge/resolver": "^1.6.10",
     "@forge/api": "^5.2.0",
-    "@forge/ui": "^1.11.4",
-    "@forge/bridge": "^4.5.3"
+    "@forge/bridge": "^4.5.3",
+    "@forge/cli": "^12.14.1",
+    "@forge/resolver": "^1.6.10",
+    "@forge/ui": "^1.11.4"
   }
 }
